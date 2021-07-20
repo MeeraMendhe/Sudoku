@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./index.css">
+</head>
+<body class="body">
+    <h1 class="h1">Sudoku</h1>
+    <div class="row">
+        <div class="col-12 col-md-9 d-flex justify-content-center ">
+            <table>
+                <colgroup><col><col><col>
+                <colgroup><col><col><col>
+                <colgroup><col><col><col>
+              <tbody>
+                  <tr> <td>  <td>  <td>  <td>  <td>  <td>  <td>  <td>  <td>  
+                  <tr> <td>  <td>  <td>  <td>  <td>  <td>  <td>  <td>  <td>  
+                  <tr> <td>  <td>  <td>  <td>  <td>  <td>  <td>  <td>  <td>  
+              <tbody>
+                <tr> <td>  <td>  <td>  <td>  <td>  <td>  <td>  <td>  <td>  
+                <tr> <td>  <td>  <td>  <td>  <td>  <td>  <td>  <td>  <td>  
+                <tr> <td>  <td>  <td>  <td>  <td>  <td>  <td>  <td>  <td>  
+              <tbody>
+                <tr> <td>  <td>  <td>  <td>  <td>  <td>  <td>  <td>  <td>  
+                <tr> <td>  <td>  <td>  <td>  <td>  <td>  <td>  <td>  <td>  
+                <tr> <td>  <td>  <td>  <td>  <td>  <td>  <td>  <td>  <td>  
+              </table>
+        </div>
+        <div class="box" class="col-12 col-md-3">
+            <form>
+                <div>
+                  <textarea class="input" id="problem" rows="9"></textarea>
+                </div>
+                <button type="submit" class="btn" id="submit">Submit</button>
+                <button type="submit" class="btn" id="solve" >Solve</button>
+            </form>
+        </div>
+    </div>    
+    <script src="./index.js"></script>
+</body>
+</html>
