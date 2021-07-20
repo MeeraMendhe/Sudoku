@@ -1,28 +1,27 @@
-let tds;
+let box;
 let count = 0;
-let toBeFilled;
-let matrix;
+let sudoku;
+let arr;
 
 
 window.onload = () => {
 	const problem = document.getElementById('problem');
-	problem.value = `0 4 0 0 0 0 1 7 9 
-0 0 2 0 0 8 0 5 4 
-0 0 6 0 0 5 0 0 8 
-0 8 0 0 7 0 9 1 0 
-0 5 0 0 9 0 0 3 0 
-0 1 9 0 6 0 0 4 0 
-3 0 0 4 0 0 7 0 0 
-5 7 0 1 0 0 2 0 0 
-9 2 8 0 0 0 0 6 0`;
+	problem.value = `2 0 6 0 0 0 0 4 9
+0 3 7 0 0 9 0 0 0
+1 0 0 7 0 0 0 0 6
+0 0 0 5 8 0 9 0 0
+7 0 5 0 0 0 8 0 4
+0 0 9 0 6 2 0 0 0
+9 0 0 0 0 4 0 0 1
+0 0 0 3 0 0 4 9 0
+4 1 0 0 0 0 2 0 8`;
 
 const submit = document.getElementById('submit');
 submit.addEventListener('click', () => {
     event.preventDefault();
     try {
-        processData();
+        fillSudoku();
     } catch (error) {
-        console.log(error);
         alert("Invalid Sudoku")
     }
 });
@@ -30,38 +29,65 @@ const solve = document.getElementById('solve');
 solve.addEventListener('click', () => {
     event.preventDefault();
     try {
-        Sodukosolver();
+         Sodukosolver();
+
     } catch (error) {
-        console.log(error);
         alert("Invalid Sudoku")
     }
 });
 
-tds = document.getElementsByTagName('td');
+box = document.getElementsByTagName('td');
 };
+async function fillSudoku() {
+	let input = document.getElementById('problem').value;
+	input = input.trim().split('\n');
+	arr = [];
 
+	for (let i = 0; i < 9; i++) {
+		arr.push(input[i].trim().split(' ').map(Number));
+	}
+    
+	sudoku = [];
+	for (let i = 0; i < 9; i++) {
+		for (let j = 0; j < 9; j++) {
+			if (arr[i][j] <=-1) {
+    			alert("😞 Try Again 😞 Sudoko should have Number between 1 to 9")
+                return
+			}
+		}
+    }
+	for (let i = 0; i < 9; i++) {
+		for (let j = 0; j < 9; j++) {
+			if (arr[i][j] === 0) {
+				sudoku.push([ i, j ]);
+			} else {
+				box[9 * i + j].textContent = arr[i][j];
+			}
+		}
+	}
+}
 
 function Sodukosolver() {
-	recursion(0);
-	async function recursion(index) {
-		if (index === toBeFilled.length) {
-			return true;
+	sudolu_Solver(0);
+	async function sudolu_Solver(index) {
+		if (index === sudoku.length) {
+            return true;
+            
 		} else {
-			let row = toBeFilled[index][0];
-			let col = toBeFilled[index][1];
+			let row = sudoku[index][0];
+			let col = sudoku[index][1];
 			for (let i = 1; i < 10; i++) {
 				if (check(row, col, i)) {
-					matrix[row][col] = i;
+					arr[row][col] = i;
 					await sleep(10);
-					tds[9 * row + col].textContent = matrix[row][col];
-					tds[9 * row + col].style.color = '#0a8df4';
-					tds[9 * row + col].style.borderColor = 'skyblue';
-					if (await recursion(index + 1)) {
+					box[9 * row + col].textContent = arr[row][col];
+					box[9 * row + col].style.color = "#0a8df4";
+					if (await sudolu_Solver(index + 1)) {
 						return true;
 					} else {
 						await sleep(10);
-						tds[9 * row + col].textContent = '';
-						matrix[row][col] = 0;
+						box[9 * row + col].textContent = '';
+						arr[row][col] = 0;
 					}
 				}
 			}
@@ -100,27 +126,7 @@ function check(row,col,i){
         return false
     }
 }
-async function processData() {
-	let input = document.getElementById('problem').value;
-	input = input.trim().split('\n');
-	matrix = [];
 
-	for (let i = 0; i < 9; i++) {
-		matrix.push(input[i].trim().split(' ').map(Number));
-	}
-
-	toBeFilled = [];
-
-	for (let i = 0; i < 9; i++) {
-		for (let j = 0; j < 9; j++) {
-			if (matrix[i][j] === 0) {
-				toBeFilled.push([ i, j ]);
-			} else {
-				tds[9 * i + j].textContent = matrix[i][j];
-			}
-		}
-	}
-}
 function sleep(time) {
 	return new Promise((resolve, reject) => {
 		setTimeout(() => {
@@ -129,35 +135,46 @@ function sleep(time) {
 	});
 }
 
-
-
-
-// function Soduko_solver(){
-//     let [flag,row,col] = search_blank()
-//     if(!flag){
-//         return true
+// if (sudoku_solver()) {
+//     for (let i = 0; i < 9; i++) {
+//       let str = ''
+//       for (let j = 0; j < 9; j++) {
+//         str += arr[i][j] + ' '
+//       }
+//       console.log(str)
 //     }
-//    for(let i=1;i<=9;i++){
-//        if(check(row,col,i)){
-//            arr[row][col]=i;
-//            if(Soduko_solver()){
-//                return true;
-//            }
-//            arr[row][col]=0
-//        }
+//   } else {
+//     console.log(-1)
+//   }
+// function sudoku_solver() {
+//     // console.log(row,col)
+//     let [flag,row, col]=search_black()
+//     if (!flag) {
+//       return true
 //     }
-//     return false;
-// }
-// function search_blank(row,col) {
-//     let flag = false
-//   for(row=0;row<9;row++){
-//       for(col=0;col<9;col++){
-//          if(arr[row][col]===0){
-//              flag=true
-//              return [flag,row,col]
-//          }
+//     for (let i = 1; i <= 9; i++) {
+//      // console.log(row,col)
+//       if (check(row, col, i)) {
+//         arr[row][col] = i
+//         if (sudoku_solver()) {
+//           return true
 //         }
+//         arr[row][col] = 0
+//       }
 //     }
-//     flag=false
-//     return [flag=false,row,col]
+//     return false
+//   }
 // }
+// function search_black(row, col) {
+//     let flag = false
+//     for(row=0;row<9;row++){
+//         for(col=0;col<9;col++){
+//            if(arr[row][col]===0){
+//                flag=true
+//                return [flag,row,col]
+//            }
+//           }
+//       }
+//       flag=false
+//       return [flag=false,row,col]
+//   }
